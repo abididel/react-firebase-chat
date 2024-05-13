@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>⚛️🔥💬</h1>
+        <h1>⚛️🔥💬 Service Desk Chatbot</h1>
         {user ? <button onClick={signOut} className="sign-out">Sign Out</button> : <button onClick={signIn} className="sign-in">Sign in with Google</button>}
       </header>
 
@@ -47,7 +47,17 @@ function ChatRoom({ messages, setMessages, user }) {
       photoURL: user.photoURL
     };
 
-    setMessages([...messages, newMessage]);
+    const newBotMessage = {
+      text: formValue,
+      createdAt: new Date(),
+      uid: "BOT",
+      photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png"
+    };
+    setMessages([...messages, newMessage, newBotMessage]);
+      //ADDITION
+
+
+    //setMessages([...messages, newBotMessage]);
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   };
