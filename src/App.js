@@ -7,7 +7,7 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   function signIn() {
-    const dummyUser = { uid: '123', photoURL: 'https://th.bing.com/th/id/R.54c3045a98293d8a20d680c012269bc3?rik=g1B%2b3uEdySI%2fPQ&pid=ImgRaw&r=0' };
+    const dummyUser = { uid: '123', photoURL: 'https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png' };
     setUser(dummyUser); // Mock sign in
   }
 
@@ -45,7 +45,7 @@ function ChatRoom({ messages, setMessages, user }) {
       text: formValue,
       createdAt: new Date(),
       uid: user.uid,
-      photoURL: false//user.photoURL
+      photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",//user.photoURL
     };
 
     const newBotMessage = {
@@ -54,7 +54,7 @@ function ChatRoom({ messages, setMessages, user }) {
       uid: false,
       photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",
       escalate: true,
-      button: {"label": "Escalate"}
+      button: {"label": "Escalate to a service agent"}
     };
     setMessages([...messages, newMessage, newBotMessage]);
       //ADDITION

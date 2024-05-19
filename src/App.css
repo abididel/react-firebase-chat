@@ -23,6 +23,11 @@ body {
   z-index: 99;
   padding: 10px;
   box-sizing: border-box;
+
+  white-space: nowrap;      /* Prevents the text from breaking into multiple lines */
+  overflow: hidden;         /* Ensures that overflowing text is clipped */
+  text-overflow: ellipsis;  /* Adds the ellipsis (...) to indicate overflowed text */
+
 }
 
 .App section {
@@ -107,8 +112,6 @@ button:disabled {
   max-width: 400px;
   margin: 0 auto;
 }
-
-
 
 
 ul, li {
