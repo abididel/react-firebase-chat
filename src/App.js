@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 import ChatMessage from './messageContainer'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket, faX, faEllipsisVertical, faHome, faInfoCircle, faEnvelope, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 function App() {
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
 
   function signIn() {
-    const dummyUser = { uid: '123', photoURL: 'https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png' };
+    const dummyUser = { uid: '123', photoURL: 'logo.svg' };
     setUser(dummyUser); // Mock sign in
   }
 
@@ -17,10 +20,16 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        <h1>💬 Service Desk Chatbot</h1>
-        {user ? <button onClick={signOut} className="sign-out">Sign Out</button> : <button onClick={signIn} className="sign-in">Sign in with Google</button>}
-      </header>
+      <nav>
+        <h1 id="navbarheader">💬 Service Desk Chatbot</h1>
+        <div className="nav-buttons">
+        <button title="Home"><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          <button title="About"><FontAwesomeIcon icon={faInfoCircle} /></button>
+          <button onClick={user ? signOut : signIn}><FontAwesomeIcon icon={faRightToBracket} /></button>
+          <button title="Contact"><FontAwesomeIcon icon={faEnvelope} /></button>
+{/*user ? <button onClick={signOut} className="sign-out">Sign Out</button> : <button onClick={signIn} className="sign-in">Sign in with Google</button>*/}
+        </div>
+      </nav>
 
       <section>
         {user ? <ChatRoom messages={messages} setMessages={setMessages} user={user} /> : <SignIn />}
