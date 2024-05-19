@@ -40,8 +40,9 @@ main {
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  align-items: stretch;
 }
-
 main::-webkit-scrollbar {
   width: 0.25rem;
 }
@@ -130,7 +131,6 @@ p {
   display: flex;
   align-items: center;
 }
-
 
 .sent {
   flex-direction: row-reverse;
