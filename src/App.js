@@ -63,7 +63,10 @@ function ChatRoom({ messages, setMessages, user }) {
       uid: false,
       photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",
       escalate: true,
-      button: {"label": "Escalate to a service agent"}
+      buttons: [
+                {"label": "Escalate to a service agent"}, 
+                {"label": "Visit documentation"},
+              ]
     };
     setMessages([...messages, newMessage, newBotMessage]);
       //ADDITION
@@ -77,7 +80,7 @@ function ChatRoom({ messages, setMessages, user }) {
     <>
       <main>
         {/*messages.map((msg, index) => <ChatMessage key={index} message={msg} />)*/}
-        {messages.map((msg, index) => <ChatMessage key={index} messages={[msg.text]} buttons={[msg.button]} avatar={msg.photoURL} isUser={msg.uid === false ? false : true}/>)}
+        {messages.map((msg, index) => <ChatMessage key={index} messages={[msg.text]} buttons={msg.buttons} avatar={msg.photoURL} isUser={msg.uid === false ? false : true}/>)}
         <span ref={dummy}></span>
       </main>
 

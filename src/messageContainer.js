@@ -53,7 +53,7 @@ const Button = styled.button`
   color: white;
   border: none;
   padding: 8px 15px;
-  margin: 5px auto;
+  margin: 5px 0; // Changed from 5px auto to 5px 0 to align to the start
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -106,7 +106,7 @@ const ChatMessage = ({ avatar, messages, buttons, isUser }) => {
             {message}
           </MessageBubble>
         ))}
-        {buttons.length > 0 && (
+        {buttons && buttons.length > 0 && (
           <ButtonContainer>
             {buttons.map((button, index) => (
               button && (
