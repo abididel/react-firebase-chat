@@ -26,7 +26,7 @@ function App() {
         <button title="Home"><FontAwesomeIcon icon={faEllipsisVertical} /></button>
           <button title="About"><FontAwesomeIcon icon={faInfoCircle} /></button>
           <button onClick={user ? signOut : signIn}><FontAwesomeIcon icon={faRightToBracket} /></button>
-          <button title="Contact"><FontAwesomeIcon icon={faEnvelope} /></button>
+          <button title="Contact"><FontAwesomeIcon icon={faX} /></button>
 {/*user ? <button onClick={signOut} className="sign-out">Sign Out</button> : <button onClick={signIn} className="sign-in">Sign in with Google</button>*/}
         </div>
       </nav>

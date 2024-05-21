@@ -28,17 +28,17 @@ const Avatar = styled.img`
 
 // Styling for the message bubble
 const MessageBubble = styled.div`
-  background-color: #f2f2f2;
+  background-color: ${props => props.isUser ? '#e0e0e0' : '#f2f2f2'};
   padding: 10px 15px;
-  border-radius: 8px;
+  border-radius: ${props => props.isUser ? '8px 0 8px 8px' : '0 8px 8px 8px'};
   margin: 5px 0;
-  max-width: 100%;
   text-align: left;
   display: inline-block;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-all;
   box-sizing: border-box; /* Ensures padding is included in the width calculation */
+  align-self: flex-start;
 `;
 
 const ButtonContainer = styled.div`
@@ -57,7 +57,7 @@ const Button = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
 
-  max-width: 100%;
+  width: auto; /* Ensure buttons are auto-sized based on their content */
   font-size: 15px;
   display: flex;
   align-items: center;
@@ -70,10 +70,7 @@ const Button = styled.button`
   &:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(16, 79, 137, 0.5);
-
-    
   }
-
 `;
 
 const ButtonText = styled.span`
@@ -98,23 +95,25 @@ const MessageContent = styled.div`
 const ChatMessage = ({ avatar, messages, buttons, isUser }) => {
   return (
     <MessageContainer isUser={isUser}>
-      <Avatar src={avatar} alt="Chat Avatar" isUser={isUser} />
+      {!isUser && <Avatar src={avatar} alt="Chat Avatar" />}
       <MessageContent>
         {messages.map((message, index) => (
-          <MessageBubble key={index}>
+          <MessageBubble key={index} isUser={isUser}>
             {message}
           </MessageBubble>
         ))}
-        <ButtonContainer>
-          {buttons.map((button, index) => (
-            button && (
-              <Button key={index} onClick={button.onClick}>
-                <ButtonText>{button.label}</ButtonText>
-                <ButtonArrow>&rarr;</ButtonArrow>
-              </Button>
-            )
-          ))}
-        </ButtonContainer>
+        {buttons.length > 0 && (
+          <ButtonContainer>
+            {buttons.map((button, index) => (
+              button && (
+                <Button key={index} onClick={button.onClick}>
+                  <ButtonText>{button.label}</ButtonText>
+                  <ButtonArrow>&rarr;</ButtonArrow>
+                </Button>
+              )
+            ))}
+          </ButtonContainer>
+        )}
       </MessageContent>
     </MessageContainer>
   );
