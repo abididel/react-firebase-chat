@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const avatarSideSize = 50; // px
+const avatarSideSize = 35; // px
 const outerFrameMargin = 10; // px
 const imgToChatBubbleMargin = 10; // px
 
@@ -101,11 +101,12 @@ const ChatMessage = ({ avatar, messages, buttons, isUser }) => {
     <MessageContainer isUser={isUser}>
       {!isUser && <Avatar src={avatar} alt="Chat Avatar" />}
       <MessageContent>
-        {messages.map((message, index) => (
+        {messages && messages.length > 0 && (
+          messages.map((message, index) => (
           <MessageBubble key={index} isUser={isUser}>
             {message}
           </MessageBubble>
-        ))}
+        )))}
         {buttons && buttons.length > 0 && (
           <ButtonContainer>
             {buttons.map((button, index) => (

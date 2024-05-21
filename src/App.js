@@ -51,14 +51,14 @@ function ChatRoom({ messages, setMessages, user }) {
   const sendMessage = (e) => {
     e.preventDefault();
     const newMessage = {
-      text: formValue,
+      text: [formValue],
       createdAt: new Date(),
       uid: user.uid,
       photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",//user.photoURL
     };
 
     const newBotMessage = {
-      text: formValue,
+      text: [formValue, "Second message"],
       createdAt: new Date(),
       uid: false,
       photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",
@@ -80,7 +80,7 @@ function ChatRoom({ messages, setMessages, user }) {
     <>
       <main>
         {/*messages.map((msg, index) => <ChatMessage key={index} message={msg} />)*/}
-        {messages.map((msg, index) => <ChatMessage key={index} messages={[msg.text]} buttons={msg.buttons} avatar={msg.photoURL} isUser={msg.uid === false ? false : true}/>)}
+        {messages.map((msg, index) => <ChatMessage key={index} messages={msg.text} buttons={msg.buttons} avatar={msg.photoURL} isUser={msg.uid === false ? false : true}/>)}
         <span ref={dummy}></span>
       </main>
 
