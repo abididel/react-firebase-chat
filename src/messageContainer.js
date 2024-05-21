@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const avatarSideSize = 35; // px
+const avatarSideSize = 50; // px
 const outerFrameMargin = 10; // px
 const imgToChatBubbleMargin = 10; // px
+const fontSize = 25; //px
+
 
 // Styling for the container including the avatar and the message bubble
 const MessageContainer = styled.div`
@@ -16,7 +18,11 @@ const MessageContainer = styled.div`
   font-family: Arial, sans-serif;
   text-align: left;
   max-width: calc(100% - ${props => (props.isUser ? avatarSideSize + outerFrameMargin : 0)}px - ${2 * imgToChatBubbleMargin}px); /* Ensure the container doesn't exceed the viewport width minus avatar size */
-`;
+  margin-top: 5px;
+  margin-buttom: 5px;
+  margin-right: ${outerFrameMargin}px;
+  font-size: ${fontSize}px;
+  `;
 
 // Styling for the avatar
 const Avatar = styled.img`
@@ -58,7 +64,6 @@ const Button = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   width: auto; /* Ensure buttons are auto-sized based on their content */
-  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
