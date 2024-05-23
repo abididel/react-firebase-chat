@@ -1,11 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const avatarSideSize = 50; // px
 const outerFrameMargin = 10; // px
 const imgToChatBubbleMargin = 10; // px
-const fontSize = 25; //px
+const fontSize = 25; // px
+const squeezeOutDuration = 0.1; // seconds
+const squeezeOutDelay = 0.05; // seconds per item
 
+// Keyframes for squeeze-out animation
+const squeezeOut = keyframes`
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+`;
 
 // Styling for the container including the avatar and the message bubble
 const MessageContainer = styled.div`
@@ -19,10 +32,10 @@ const MessageContainer = styled.div`
   text-align: left;
   max-width: calc(100% - ${props => (props.isUser ? avatarSideSize + outerFrameMargin : 0)}px - ${2 * imgToChatBubbleMargin}px); /* Ensure the container doesn't exceed the viewport width minus avatar size */
   margin-top: 5px;
-  margin-buttom: 5px;
+  margin-bottom: 5px;
   margin-right: ${outerFrameMargin}px;
   font-size: ${fontSize}px;
-  `;
+`;
 
 // Styling for the avatar
 const Avatar = styled.img`
@@ -44,6 +57,10 @@ const MessageBubble = styled.div`
   overflow-wrap: break-word;
   word-break: break-all;
   box-sizing: border-box; /* Ensures padding is included in the width calculation */
+  animation: ${squeezeOut} ${squeezeOutDuration}s ease-out forwards;
+  animation-delay: ${props => props.isUser ? 0 : (props.index + 1) * squeezeOutDelay}s;
+  transform-origin: ${props => (props.isUser ? 'right' : 'left')};
+  opacity: 0; /* Ensure the element is hidden initially */
 `;
 
 // Styling for the button container
@@ -67,6 +84,10 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  animation: ${squeezeOut} ${squeezeOutDuration}s ease-out forwards;
+  animation-delay: ${props => (props.messagesLength + props.index + 1) * squeezeOutDelay}s;
+  transform-origin: ${props => (props.isUser ? 'right' : 'left')};
+  opacity: 0; /* Ensure the element is hidden initially */
 
   &:hover {
     background-color: rgba(24, 119, 206, 1);
@@ -108,7 +129,7 @@ const ChatMessage = ({ avatar, messages, buttons, isUser }) => {
       <MessageContent>
         {messages && messages.length > 0 && (
           messages.map((message, index) => (
-          <MessageBubble key={index} isUser={isUser}>
+          <MessageBubble key={index} isUser={isUser} index={index}>
             {message}
           </MessageBubble>
         )))}
@@ -116,7 +137,7 @@ const ChatMessage = ({ avatar, messages, buttons, isUser }) => {
           <ButtonContainer>
             {buttons.map((button, index) => (
               button && (
-                <Button key={index} onClick={button.onClick}>
+                <Button key={index} onClick={button.onClick} isUser={isUser} index={index} messagesLength={messages.length}>
                   <ButtonText>{button.label}</ButtonText>
                   <ButtonArrow>&rarr;</ButtonArrow>
                 </Button>
