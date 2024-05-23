@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
-import ChatMessage from './messageContainer'
+import ChatMessage from './messageContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket, faX, faEllipsisVertical, faHome, faInfoCircle, faEnvelope, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket, faX, faEllipsisVertical, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
+// Customizable variables for scrolling behavior
+const scrollBehavior = 'smooth';
+const scrollTimeout = 100; // Timeout for scroll to bottom after DOM updates (in milliseconds)
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,11 +26,10 @@ function App() {
       <nav>
         <h1 id="navbarheader">💬 Service Desk Chatbot</h1>
         <div className="nav-buttons">
-        <button title="Home"><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          <button title="Options"><FontAwesomeIcon icon={faEllipsisVertical} /></button>
           <button title="About"><FontAwesomeIcon icon={faInfoCircle} /></button>
           <button onClick={user ? signOut : signIn}><FontAwesomeIcon icon={faRightToBracket} /></button>
-          <button title="Contact"><FontAwesomeIcon icon={faX} /></button>
-{/*user ? <button onClick={signOut} className="sign-out">Sign Out</button> : <button onClick={signIn} className="sign-in">Sign in with Google</button>*/}
+          <button title="Close"><FontAwesomeIcon icon={faX} /></button>
         </div>
       </nav>
 
@@ -45,8 +47,31 @@ function SignIn() {
 }
 
 function ChatRoom({ messages, setMessages, user }) {
-  const dummy = useRef();
+  const messageEl = useRef();
   const [formValue, setFormValue] = useState('');
+
+  useEffect(() => {
+    if (messageEl.current) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length) {
+            setTimeout(() => {
+              messageEl.current.scrollTo({ top: messageEl.current.scrollHeight, behavior: scrollBehavior });
+            }, scrollTimeout);
+          }
+        });
+      });
+
+      observer.observe(messageEl.current, { childList: true, subtree: true });
+
+      // Initial scroll to bottom if there are already messages present
+      messageEl.current.scrollTo({ top: messageEl.current.scrollHeight, behavior: scrollBehavior });
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [messages]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -54,7 +79,7 @@ function ChatRoom({ messages, setMessages, user }) {
       text: [formValue],
       createdAt: new Date(),
       uid: user.uid,
-      photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",//user.photoURL
+      photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",
     };
 
     const newBotMessage = {
@@ -64,28 +89,22 @@ function ChatRoom({ messages, setMessages, user }) {
       photoURL: "https://mir-s3-cdn-cf.behance.net/projects/404/a42236171852785.Y3JvcCwxMzEzLDEwMjcsMTQzLDg3.png",
       escalate: true,
       buttons: [
-                {"label": "Escalate to a service agent"}, 
-                {"label": "Visit documentation"},
-              ]
+        { "label": "Escalate to a service agent" },
+        { "label": "Visit documentation" },
+      ]
     };
     setMessages([...messages, newMessage, newBotMessage]);
-      //ADDITION
-
-    //setMessages([...messages, newBotMessage]);
     setFormValue('');
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
-      <main>
-        {/*messages.map((msg, index) => <ChatMessage key={index} message={msg} />)*/}
-        {messages.map((msg, index) => <ChatMessage key={index} messages={msg.text} buttons={msg.buttons} avatar={msg.photoURL} isUser={msg.uid === false ? false : true}/>)}
-        <span ref={dummy}></span>
+      <main ref={messageEl}>
+        {messages.map((msg, index) => <ChatMessage key={index} messages={msg.text} buttons={msg.buttons} avatar={msg.photoURL} isUser={msg.uid !== false} />)}
       </main>
 
       <form onSubmit={sendMessage}>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Skriv her" />
+        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type here, avoid personal information" />
         <button type="submit" disabled={!formValue}>➤</button>
       </form>
     </>

@@ -48,6 +48,11 @@
   --requestGridHeaderFontSize: 16px;
   --requestGridRowFontSize: 14px;
   --requestGridShadowColor: #a0a0a0;
+  --scrollbarWidth: 12px;
+  --scrollbarTrackColor: #ffffff; /* Match the background color */
+  --scrollbarThumbColor: #808080; /* Grey color for scroll thumb */
+  --formHeight: 6vh;
+  --navbarHeight: 6vh;
 }
 
 body {
@@ -59,6 +64,9 @@ body {
   text-align: center;
   max-width: 728px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 #navbarheader {
@@ -70,7 +78,7 @@ body {
 
 .App nav {
   background-color: var(--headerThemeColor);
-  height: 10vh;
+  height: var(--navbarHeight);
   min-height: 50px;
   color: var(--companyLabelFontColor);
   position: fixed;
@@ -81,7 +89,7 @@ body {
   align-items: center;
   justify-content: space-between;
   z-index: 99;
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
 }
 
@@ -108,36 +116,59 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
   background-color: var(--pageBackground);
-  padding-top: 10vh; /* Offset for fixed navbar */
+  padding-top: var(--navbarHeight); /* Offset for fixed navbar */
+  flex-grow: 1;
+  overflow: hidden; /* Ensure the section doesn't overflow */
 }
 
 main {
   padding: 10px;
-  height: 80vh;
-  margin: 10vh 0 10vh;
+  flex-grow: 1;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: stretch;
+  box-sizing: border-box;
+  height: calc(100vh - var(--formHeight) - var(--navbarHeight)); /* Adjust height to fit between nav and form */
+  margin-bottom: var(--formHeight); /* Ensure it doesn't overlap with the form */
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+/* Custom scrollbar styles */
+main {
+  scrollbar-width: var(--scrollbarWidth); /* Hide the scrollbar for Firefox */
 }
 
 main::-webkit-scrollbar {
-  width: 0.25rem;
+  width: var(--scrollbarWidth);
 }
 
 main::-webkit-scrollbar-track {
-  background: #1e1e24;
+  background: var(--scrollbarTrackColor); /* Match the background color */
 }
 
 main::-webkit-scrollbar-thumb {
-  background: #6649b8;
+  background: var(--scrollbarThumbColor);
+}
+
+main::-webkit-scrollbar-button {
+  background: var(--scrollbarTrackColor); /* Match the background color */
+}
+
+::-moz-scrollbar-button, ::-webkit-scrollbar-button {
+  width: 0px;
+}
+
+/* Fallback for Firefox */
+main {
+  scrollbar-color: var(--scrollbarThumbColor) var(--scrollbarTrackColor);
+  scrollbar-width: thin;
 }
 
 form {
-  height: 10vh;
+  height: var(--formHeight);
   position: fixed;
   bottom: 0;
   background-color: var(--headerThemeColor);
@@ -145,6 +176,7 @@ form {
   max-width: 728px;
   display: flex;
   font-size: 1.5rem;
+  z-index: 100;
 }
 
 form button {
